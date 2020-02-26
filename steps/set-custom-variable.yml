@@ -1,0 +1,16 @@
+# Example: set `$(build-sha)` based on `git rev-parse --short HEAD` for future steps/jobs
+
+parameters:
+  - name: variableName
+    type: string
+    default: ''
+
+  - name: command
+    type: string
+    default: ''
+
+steps:
+  - script: |
+      echo '##vso[task.setvariable variable=${{ parameters.variableName }}]'$(${{ parameters.command }})''
+      echo 'Custom variable ${{ parameters.variableName }} set to $(${{ parameters.variableName }})'
+    displayName: "Helper: Set custom variable based on command"

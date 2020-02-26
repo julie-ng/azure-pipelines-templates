@@ -1,0 +1,25 @@
+parameters:
+  - name: appName
+    type: string
+    default: ''
+
+  - name: dockerImage
+    type: string
+    default: ''
+
+  - name: serviceConnectionName
+    type: string
+    default: ''
+
+  - name: condition
+    type: string
+    default: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+steps:
+  - task: AzureWebAppContainer@1
+    displayName: "App Service: deploy container"
+    condition: ${{ parameters.condition }}
+    inputs:
+      appName: ${{ parameters.appName }}
+      azureSubscription: ${{ parameteres.serviceConnectionName }}
+      imageName: ${{ parameters.dockerImage }}
