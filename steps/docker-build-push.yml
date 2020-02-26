@@ -9,7 +9,8 @@ parameters:
 
   - name: tags
     type: object
-    default: {}
+    default:
+      - 'dev'
 
 steps:
 - ${{ each tag in parameters.tags }}:
