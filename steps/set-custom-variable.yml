@@ -14,8 +14,10 @@ parameters:
     default: succeeded()
 
 steps:
-  - script: |
-      echo '##vso[task.setvariable variable=${{ parameters.variableName }}]'$(${{ parameters.command }})''
-      echo 'Custom variable ${{ parameters.variableName }} set to $(${{ parameters.variableName }})'
-    displayName: "Helper: Set custom variable based on command"
+  - script: echo '##vso[task.setvariable variable=${{ parameters.variableName }}]'$(${{ parameters.command }})''
+    displayName: "Custom var: set based on command"
+    condition: ${{ parameters.condition }}
+
+  - script: echo 'Custom variable ${{ parameters.variableName }} set to $(${{ parameters.variableName }})'
+    displayName: "Custom var: output"
     condition: ${{ parameters.condition }}
