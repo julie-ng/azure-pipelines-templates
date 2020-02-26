@@ -14,6 +14,10 @@ parameters:
 steps:
 - ${{ each tag in parameters.tags }}:
   - script: echo 'tag - ${{ tag }}'
+    displayName: 'echo tag'
+
+- script: echo 'tag - ${{ parameters.tags[0] }}'
+  displayName: 'try echo first tag'
   # - script: |
   #     docker build --tag ${{ parameters.snapshotTag }} .
   #     docker tag ${{ parameters.snapshotTag }} ${{ parameters.devTag }}
