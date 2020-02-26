@@ -19,7 +19,7 @@ steps:
   displayName: "Login ACR"
   inputs:
     command: login
-    azureSubscriptionEndpoint: ${{ parameteres.serviceConnectionName }}
+    azureSubscriptionEndpoint: ${{ parameters.serviceConnectionName }}
     azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
 
 # Use first tag as reference for subsequent tags
