@@ -13,29 +13,32 @@ parameters:
       - 'dev'
 
 steps:
+
+# Login
+- task: Docker@1
+  displayName: "Login ACR"
+  inputs:
+    command: login
+    azureSubscriptionEndpoint: ${{ parameteres.serviceConnectionName }}
+    azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+
+# Use first tag as reference for subsequent tags
+- script: docker build --tag ${{ parameters.tags[0] }} .
+  displayName: "Build and apply ${{ parameters.tags[0] }} tag"
+
+- script: docker push ${{ parameters.tags[0] }}
+  displayName: 'Push ${{ parameters.tags[0] }} tag'
+
+# Loop through tags - appply and push
 - ${{ each tag in parameters.tags }}:
-  - script: echo 'tag - ${{ tag }}'
-    displayName: 'echo tag'
+    ${{ if ne(tag, parameters.tags[0]) }}:
+      - script: |
+          docker tag ${{ parameters.tags[0] }} ${{ tag }}
+        displayName: "Apply ${{ tag }} tag"
 
-- script: echo 'tag - ${{ parameters.tags[0] }}'
-  displayName: 'try echo first tag'
-  # - script: |
-  #     docker build --tag ${{ parameters.snapshotTag }} .
-  #     docker tag ${{ parameters.snapshotTag }} ${{ parameters.devTag }}
-  #   displayName: "Docker: build and tag image"
+      - script: docker push ${{ parameters.tags[0] }}
+        displayName: 'Push ${{ tag }} tag'
 
-  # - task: Docker@1 # Use the task to avoid embedding credentials in pipeline
-  #   displayName: "Docker: login ACR"
-  #   inputs:
-  #     command: login
-  #     azureSubscriptionEndpoint: ${{ parameteres.serviceConnectionName }}
-  #     azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
-
-  # - script: docker push ${{ parameters.snapshotTag }}
-  #   displayName: "Docker: push snapshot"
-
-  # - script: docker push ${{ parameters.devTag }}
-  #   displayName: "Docker: push dev"
-
-  # - script: docker logout  ${{ parameters.azureContainerRegistry }}
-  #   displayName: "Docker: logout ACR"
+# Logout
+- script: docker logout  ${{ parameters.azureContainerRegistry }}
+  displayName: "Logout ACR"
