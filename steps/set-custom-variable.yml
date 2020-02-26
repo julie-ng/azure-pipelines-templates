@@ -9,8 +9,13 @@ parameters:
     type: string
     default: ''
 
+  - name: condition
+    type: string
+    default: and(succeeded())
+
 steps:
   - script: |
       echo '##vso[task.setvariable variable=${{ parameters.variableName }}]'$(${{ parameters.command }})''
       echo 'Custom variable ${{ parameters.variableName }} set to $(${{ parameters.variableName }})'
     displayName: "Helper: Set custom variable based on command"
+    condition: ${{ parameters.condition }}
