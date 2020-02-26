@@ -11,7 +11,7 @@ parameters:
 
   - name: condition
     type: string
-    default: and(succeeded())
+    default: succeeded()
 
 steps:
   - script: |
