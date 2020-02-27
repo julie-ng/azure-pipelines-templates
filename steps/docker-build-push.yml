@@ -7,16 +7,36 @@ parameters:
     type: string
     default: ''
 
+  - name: imageName # e.g. namespace/myimage
+    type: string
+    default: ''
+
   - name: tags
     type: object
     default:
       - 'dev'
 
 steps:
-- ${{ each tag in parameters.tags }}:
-  - script: 'echo tag: ${{ tag }}'
-    displayName: test variable input
 
+- task: Docker@2
+  displayName: Login to ACR
+  inputs:
+    command: login
+    containerRegistry: ${{ parameters.serviceConnectionName }}
+
+
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: ${{ parameters.imageName }}
+    tags: ${{ parameters.tags }}
+
+- task: Docker@2
+  displayName: Logout of ACR
+  inputs:
+    command: logout
+    containerRegistry: ${{ parameters.serviceConnectionName }}
 
 # Login
 # - task: Docker@1
