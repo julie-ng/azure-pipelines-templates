@@ -30,14 +30,14 @@ steps:
   displayName: 'Push ${{ parameters.tags[0] }} tag'
 
 # Loop through tags - appply and push
-- ${{ each tag in parameters.tags }}:
-    ${{ if ne(tag, parameters.tags[0]) }}:
-      - script: |
-          docker tag ${{ parameters.tags[0] }} ${{ tag }}
-        displayName: "Apply ${{ tag }} tag"
+# - ${{ each tag in parameters.tags }}:
+#     ${{ if ne(tag, parameters.tags[0]) }}:
+#       - script: |
+#           docker tag ${{ parameters.tags[0] }} ${{ tag }}
+#         displayName: "Apply ${{ tag }} tag"
 
-      - script: docker push ${{ parameters.tags[0] }}
-        displayName: 'Push ${{ tag }} tag'
+#       - script: docker push ${{ parameters.tags[0] }}
+#         displayName: 'Push ${{ tag }} tag'
 
 # Logout
 - script: docker logout  ${{ parameters.azureContainerRegistry }}
