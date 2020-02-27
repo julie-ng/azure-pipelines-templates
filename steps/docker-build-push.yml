@@ -1,42 +1,35 @@
 parameters:
-
-
-  - name: serviceConnectionName
+  # Must be Docker Registry Connection, not ARM
+  - name: registryConnectionName
     type: string
     default: ''
 
-  - name: azureContainerRegistry
+  - name: imageName # e.g. namespace/myimage
     type: string
     default: ''
 
-  - name: snapshotTag
+  - name: tagsAsMultilineString
     type: string
-    default: ''
-
-  - name: devTag
-    type: string
-    default: ''
-
-# Variable Groups - anything prefixed `newton-`
+    default: |
+      dev
 
 steps:
-  - script: |
-      docker build --tag ${{ parameters.snapshotTag }} .
-      docker tag ${{ parameters.snapshotTag }} ${{ parameters.devTag }}
-    displayName: "Docker: build and tag image"
 
-  - task: Docker@1 # Use the task to avoid embedding credentials in pipeline
-    displayName: "Docker: login ACR"
-    inputs:
-      command: login
-      azureSubscriptionEndpoint: ${{ parameteres.serviceConnectionName }}
-      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+- task: Docker@2
+  displayName: Login to ACR
+  inputs:
+    command: login
+    containerRegistry: ${{ parameters.registryConnectionName }}
 
-  - script: docker push ${{ parameters.snapshotTag }}
-    displayName: "Docker: push snapshot"
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: ${{ parameters.imageName }}
+    tags: ${{ parameters.tagsAsMultilineString }}
 
-  - script: docker push ${{ parameters.devTag }}
-    displayName: "Docker: push dev"
-
-  - script: docker logout  ${{ parameters.azureContainerRegistry }}
-    displayName: "Docker: logout ACR"
+- task: Docker@2
+  displayName: Logout of ACR
+  inputs:
+    command: logout
+    containerRegistry: ${{ parameters.registryConnectionName }}
