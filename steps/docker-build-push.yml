@@ -11,39 +11,31 @@ parameters:
     type: string
     default: ''
 
-  - name: tags
-    type: object
-    default:
-      - 'dev'
+  - name: tagsAsMultilineString
+    type: string
+    default: |
+      dev
 
 steps:
 
-# - task: Docker@2
-#   displayName: Login to ACR
-#   inputs:
-#     command: login
-#     containerRegistry: ${{ parameters.serviceConnectionName }}
+- task: Docker@2
+  displayName: Login to ACR
+  inputs:
+    command: login
+    containerRegistry: ${{ parameters.serviceConnectionName }}
 
-- template: ./set-custom-variable.yml
-  parameters:
-    variableName: tags-as-string
-    command: 'printf "%s\n"  "${${{ parameters.tags }}[@]}"'
+- task: Docker@2
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: ${{ parameters.imageName }}
+    tags: ${{ parameters.tagsAsMultilineString }}
 
-- script: 'echo ${{ tags-as-string }}'
-  displayName: 'debug'
-
-# - task: Docker@2
-#   displayName: Build and Push
-#   inputs:
-#     command: buildAndPush
-#     repository: ${{ parameters.imageName }}
-#     tags: ${{ tags-as-string }}
-
-# - task: Docker@2
-#   displayName: Logout of ACR
-#   inputs:
-#     command: logout
-#     containerRegistry: ${{ parameters.serviceConnectionName }}
+- task: Docker@2
+  displayName: Logout of ACR
+  inputs:
+    command: logout
+    containerRegistry: ${{ parameters.serviceConnectionName }}
 
 # Login
 # - task: Docker@1
