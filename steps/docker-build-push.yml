@@ -24,13 +24,13 @@ steps:
     command: login
     containerRegistry: ${{ parameters.serviceConnectionName }}
 
-
 - task: Docker@2
   displayName: Build and Push
   inputs:
     command: buildAndPush
     repository: ${{ parameters.imageName }}
-    tags: ${{ parameters.tags }}
+    tags: |
+      ${{ parameters.tags }}
 
 - task: Docker@2
   displayName: Logout of ACR
