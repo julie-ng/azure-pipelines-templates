@@ -36,32 +36,3 @@ steps:
   inputs:
     command: logout
     containerRegistry: ${{ parameters.serviceConnectionName }}
-
-# Login
-# - task: Docker@1
-#   displayName: "Login ACR"
-#   inputs:
-#     command: login
-#     azureSubscriptionEndpoint: ${{ parameters.serviceConnectionName }}
-#     azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
-
-# # Use first tag as reference for subsequent tags
-# - script: docker build --tag ${{ parameters.tags[0] }} .
-#   displayName: "Build and apply ${{ parameters.tags[0] }} tag"
-
-# - script: docker push ${{ parameters.tags[0] }}
-#   displayName: 'Push ${{ parameters.tags[0] }} tag'
-
-# # Loop through tags - appply and push
-# # - ${{ each tag in parameters.tags }}:
-# #     ${{ if ne(tag, parameters.tags[0]) }}:
-# #       - script: |
-# #           docker tag ${{ parameters.tags[0] }} ${{ tag }}
-# #         displayName: "Apply ${{ tag }} tag"
-
-# #       - script: docker push ${{ parameters.tags[0] }}
-# #         displayName: 'Push ${{ tag }} tag'
-
-# # Logout
-# - script: docker logout  ${{ parameters.azureContainerRegistry }}
-#   displayName: "Logout ACR"
