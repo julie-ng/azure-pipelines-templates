@@ -7,7 +7,7 @@ parameters:
     type: string
     default: ''
 
-  - name: serviceConnectionName
+  - name: ARMConnectionName
     type: string
     default: ''
 
@@ -21,5 +21,5 @@ steps:
     condition: ${{ parameters.condition }}
     inputs:
       appName: ${{ parameters.appName }}
-      azureSubscription: ${{ parameteres.serviceConnectionName }}
+      azureSubscription: ${{ parameters.ARMConnectionName }}
       imageName: ${{ parameters.dockerImage }}
