@@ -2,8 +2,9 @@
 
 Some re-usable Azure Pipelines snippets I use.
 
+For more about Azure DevOps Templates, please see official [Azure Docs: "Template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
 
-## Setup
+### Setup
 
 In your `azure-pipelines.yml` file for your project, add a reference to this repository:
 
@@ -12,7 +13,7 @@ In your `azure-pipelines.yml` file for your project, add a reference to this rep
 
 resources:
   repositories:
-    - repository: templates
+    - repository: templates # for reference
       type: github
       name: julie-ng/azure-pipelines-templates
       ref: refs/heads/master      
@@ -20,7 +21,7 @@ resources:
 
 Because this a public repository, no service connection is required. For more information, see [Azure Docs: templates and using repositories](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops#use-other-repositories)
 
-## Templates
+### Templates
 
 ## `steps/set-custom-variable.yml`
 
@@ -33,9 +34,9 @@ For example, here we set the `git-sha` variable to output of `git rev-parse --sh
 
 steps:
 - template: steps/set-custom-variable.yml@templates
-	parameters:
-		variableName: git-sha
-		command: 'git rev-parse --short HEAD'				
+  parameters:
+    variableName: git-sha
+    command: 'git rev-parse --short HEAD'				
 ```
 
 _Note: `@templates` refers to repository name from setup as described above._
@@ -56,12 +57,12 @@ The example below takes the `$(git-sha)` variable and uses it as a Docker tag. T
 ```yaml
 steps:
 - template: steps/docker-build-push.yml@templates
-	parameters:
-		registryConnectionName: $(registry-service-connection)
-		imageName: $(image-name)
-		tagsAsMultilineString: |
-			$(git-sha)
-			'1.0.0'
+  parameters:
+    registryConnectionName: $(registry-service-connection)
+    imageName: $(image-name)
+    tagsAsMultilineString: |
+      $(git-sha)
+      '1.0.0'
 ```
 
 _Note: `@templates` refers to repository name from setup as described above._
