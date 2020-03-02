@@ -1,10 +1,10 @@
-# azure-pipeline-templates
+# Azure Pipelines - Snippets, Templates
 
-Some re-usable Azure Pipelines snippets I use.
+Some re-usable [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) snippets I use acrossed my Azure Pipelines. 
 
-For more about Azure DevOps Templates, please see official [Azure Docs: "Template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
+For more about Azure DevOps Templates, please see official [Azure Docs on "template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops). For an example pipeline, see my [azure-nodejs-demo](https://github.com/julie-ng/azure-nodejs-demo/blob/master/azure-pipelines.yml) project on GitHub.
 
-### Setup
+## Setup
 
 In your `azure-pipelines.yml` file for your project, add a reference to this repository:
 
@@ -21,7 +21,7 @@ resources:
 
 Because this a public repository, no service connection is required. For more information, see [Azure Docs: templates and using repositories](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops#use-other-repositories)
 
-### Templates
+## Templates
 
 ## `steps/set-custom-variable.yml`
 
