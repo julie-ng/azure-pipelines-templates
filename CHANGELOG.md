@@ -1,4 +1,12 @@
-#  (2020-03-07)
+# Changelog
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## 1.1.1 (2020-03-07)
+
+### Fixes
+
+* fix(deploy-app-services): remove condition param ([8f20f91](https://github.com/julie-ng/azure-pipelines-templates/commit/8f20f91))
+
 
 ## 1.1.0 (2020-03-07)
 
