@@ -11,9 +11,6 @@ parameters:
     type: string
     default: ''
 
-  - name: condition
-    type: string
-
 steps:
   - task: AzureWebAppContainer@1
     displayName: "App Service: deploy container"
