@@ -13,16 +13,22 @@ parameters:
     default: |
       dev
 
+  - name: condition
+    type: string
+    default: succeeded()
+
 steps:
 
 - task: Docker@2
   displayName: Login to ACR
+  condition: ${{ parameters.condition }}
   inputs:
     command: login
     containerRegistry: ${{ parameters.registryConnectionName }}
 
 - task: Docker@2
   displayName: Build and Push
+  condition: ${{ parameters.condition }}
   inputs:
     command: buildAndPush
     repository: ${{ parameters.imageName }}
@@ -30,6 +36,7 @@ steps:
 
 - task: Docker@2
   displayName: Logout of ACR
+  condition: ${{ parameters.condition }}
   inputs:
     command: logout
     containerRegistry: ${{ parameters.registryConnectionName }}
