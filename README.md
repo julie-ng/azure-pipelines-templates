@@ -2,6 +2,13 @@
 
 Some re-usable [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) snippets I use acrossed my Azure Pipelines. 
 
+| Name | Template | 
+|:--|:--|
+| [Set Custom Variable](#set-custom-variable) | `steps/set-custom-variable.yml`|
+| [Combined Docker login, build, push and logout Tasks](#combined-docker-login-build-push-and-logout-tasks) | `steps/docker-build-push.yml`| 
+| [Lock Azure Container Registory Image](#lock-azure-container-registory-image) (makes immutable) | `steps/lock-acr-image.yml`| 
+| [Deploy Container to Azure App Service](#deploy-container-to-azure-app-service) | `steps/deploy-app-service.yml`| 
+
 ### References 
 
 - Official Docs - [Azure DevOps > Template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
@@ -23,11 +30,9 @@ resources:
       ref: refs/heads/master      
 ```
 
-Because this a public repository, no service connection is required. For more information, see [Azure Docs: templates and using repositories](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops#use-other-repositories)
-
 _Note: `@templates` suffix always refers to repository name from setup as described above._
 
-### Set custom variable
+### Set Custom Variable
 
 Sometimes it's helpful to set a custom variable `at runtime` based on output. For example, you need project version or the git commit of the build. This task encapsulates the clunky `##vso[task.setvariable…]` syntax for you.
 
