@@ -58,8 +58,8 @@ The example below takes the `$(git-sha)` variable and uses it as a Docker tag. T
 steps:
 - template: steps/docker-build-push.yml@templates
   parameters:
-    registryConnectionName: $(registry-service-connection)
-    imageName: $(image-name)
+    registryConnectionName: 'acr-or-docker-hub-connection'
+    imageName: 'my-app' 
     tagsAsMultilineString: |
       $(git-sha)
       '1.0.0'
@@ -70,3 +70,21 @@ _Note: `@templates` refers to repository name from setup as described above._
 #### Rant
 
 Note the parameter is called `tagsAsMultilineString` which is due to limitations of Azure DevOps. A YAML object would make more sense to me. But [the underlying Azure DevOps task only takes multi-line strings](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/docker?view=azure-devops#task-inputs) 🤷‍♀️
+
+
+## `steps/lock-acr-image.yml`
+
+This template [locks an image in the Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-image-lock) preventing it from being deleted.
+
+Example use:
+
+```yaml
+steps:
+- template: steps/lock-acr-image.yml@templates
+  parameters:
+    azureArmConnection: 'azure-arm-connection'
+    acrRegistryName: 'myregistry'
+    imageName: 'my-app'
+    imageTag: 'v1.0'
+    condition: succeeded() # optional
+```

@@ -1,0 +1,36 @@
+parameters:
+  # Must be Docker Registry Connection, not ARM
+  - name: azureArmConnection
+    type: string
+    default: ''
+
+  - name: acrRegistryName
+    type: string
+    default: ''
+
+  - name: imageName
+    type: string
+    default: ''
+
+  - name: imageTag
+    type: string
+    default: ''
+
+  - name: condition
+    type: string
+    default: succeeded()
+
+steps:
+
+  - task: AzureCLI@2
+    displayName: 'Lock image, preventing delete'
+    condition: ${{ parameters.condition }}
+    inputs:
+      azureSubscription: ${{ parameters.azureArmConnection }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+          az --version
+          az acr repository update \
+            --name ${{ parameters.acrRegistryName }} --image ${{ parameters.imageName }}:${{ parameters.imageTag}} \
+            --write-enabled false
