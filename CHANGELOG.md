@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/julie-ng/azure-pipelines-templates/compare/v1.2.0...v1.3.0) (2020-04-10)
+
+
+### Features
+
+* add lock azure container registry template ([0971a0b](https://github.com/julie-ng/azure-pipelines-templates/commit/0971a0bb9fddeac551e3688c2ff429f503456a32))
+
 ## [1.2.0](https://github.com/julie-ng/azure-pipelines-templates/compare/v1.1.1...v1.2.0) (2020-03-15)
 
 
