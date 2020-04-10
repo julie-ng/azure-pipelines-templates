@@ -1,10 +1,14 @@
-# Azure Pipelines - Snippets, Templates
+# Re-usable Templates for Azure Pipelines
 
 Some re-usable [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) snippets I use acrossed my Azure Pipelines. 
 
-For more about Azure DevOps Templates, please see official [Azure Docs on "template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops). For an example pipeline, see my [azure-nodejs-demo](https://github.com/julie-ng/azure-nodejs-demo/blob/master/azure-pipelines.yml) project on GitHub.
+### References 
 
-## Setup
+- Official Docs - [Azure DevOps > Template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
+- Example pipeline - [julie-ng/azure-nodejs-demo/azure-pipelines.yml](https://github.com/julie-ng/azure-nodejs-demo/blob/master/azure-pipelines.yml)
+
+
+## Setup - Include Library
 
 In your `azure-pipelines.yml` file for your project, add a reference to this repository:
 
@@ -21,11 +25,9 @@ resources:
 
 Because this a public repository, no service connection is required. For more information, see [Azure Docs: templates and using repositories](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops#use-other-repositories)
 
-## Templates
-
 _Note: `@templates` suffix always refers to repository name from setup as described above._
 
-## `steps/set-custom-variable.yml`
+### Set custom variable
 
 Sometimes it's helpful to set a custom variable `at runtime` based on output. For example, you need project version or the git commit of the build. This task encapsulates the clunky `##vso[task.setvariable…]` syntax for you.
 
@@ -41,10 +43,9 @@ steps:
     command: 'git rev-parse --short HEAD'				
 ```
 
-
 The result, for example `8cd076e` may be useful for logging and auditing your project by tagging images.
 
-## `steps/docker-build-push.yml`
+### Combined Docker login, build, push and logout Tasks
 
 This template combines the following docker tasks:
 
@@ -68,22 +69,7 @@ steps:
 
 Note the parameter is called `tagsAsMultilineString` which is due to limitations of Azure DevOps. A YAML object would make more sense to me. But [the underlying Azure DevOps task only takes multi-line strings](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/docker?view=azure-devops#task-inputs) 🤷‍♀️
 
-## `steps/deploy-app-service.yml`
-
-Deploys a container to Azure App Service, [Web App for Containers](https://azure.microsoft.com/en-us/services/app-service/containers/). Works for both Docker Hub and Azure Container Registry images.
-
-Example use:
-
-```yaml
-steps:
-  - template: steps/deploy-app-service.yml@templates
-    parameters:
-      ARMConnectionName: 'arm-service-connection'
-      dockerImage: 'image-name:v1.0'
-      appName: 'myapp-dev'
-```
-
-## `steps/lock-acr-image.yml`
+### Lock Azure Container Registory Image
 
 This template [locks an image in the Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-image-lock) preventing it from being deleted.
 
@@ -98,4 +84,19 @@ steps:
     imageName: 'my-app'
     imageTag: 'v1.0'
     condition: succeeded() # optional
+```
+
+### Deploy Container to Azure App Service
+
+Deploys a container to Azure App Service, [Web App for Containers](https://azure.microsoft.com/en-us/services/app-service/containers/). Works for both Docker Hub and Azure Container Registry images.
+
+Example use:
+
+```yaml
+steps:
+  - template: steps/deploy-app-service.yml@templates
+    parameters:
+      ARMConnectionName: 'arm-service-connection'
+      dockerImage: 'image-name:v1.0'
+      appName: 'myapp-dev'
 ```
