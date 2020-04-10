@@ -11,7 +11,7 @@ Some re-usable [Azure Pipelines](https://azure.microsoft.com/en-us/services/devo
 
 ### References 
 
-- Official Docs - [Azure DevOps > Template types & usage"](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
+- Official Docs - [Azure DevOps > Template types & usage](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
 - Example pipeline - [julie-ng/azure-nodejs-demo/azure-pipelines.yml](https://github.com/julie-ng/azure-nodejs-demo/blob/master/azure-pipelines.yml)
 
 
